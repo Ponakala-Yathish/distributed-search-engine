@@ -31,13 +31,13 @@ spark.network.timeout 120
 spark.executor.heartbeatInterval 10
 EOF
 
-local_host="$DSE_VM2_HOST"
-[[ "$role" == "compute" ]] && local_host="$DSE_VM3_HOST"
-[[ "$role" == "ingestion" ]] && local_host="$DSE_VM1_HOST"
+worker_host="$DSE_VM2_HOST"
+[[ "$role" == "compute" ]] && worker_host="$DSE_VM3_HOST"
+[[ "$role" == "ingestion" ]] && worker_host="$DSE_VM1_HOST"
 python_path="$(command -v "$PYTHON_BIN")"
 cat >"$conf_dir/spark-env.sh" <<EOF
-export SPARK_MASTER_HOST=$local_host
-export SPARK_WORKER_HOST=$local_host
+export SPARK_MASTER_HOST=$DSE_VM3_HOST
+export SPARK_WORKER_HOST=$worker_host
 export SPARK_WORKER_MEMORY=$worker_memory
 export SPARK_WORKER_CORES=$worker_cores
 export PYSPARK_PYTHON=$python_path
