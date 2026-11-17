@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "distributed-search-engine"
+version = "0.1.0"
+description = "A distributed search engine using HDFS, Spark, Iceberg, BM25, and PageRank"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "PyYAML==6.0.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["config*", "ingestion*", "indexing*", "pagerank*", "search_service*", "benchmarks*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+  "integration: requires a local Spark and filesystem environment",
+  "distributed: requires the four-VM HDFS and Spark cluster",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"search_service/main.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+disable_error_code = ["import-untyped"]

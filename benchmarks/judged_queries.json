@@ -1,0 +1,14 @@
+{
+  "april": {
+    "relevant": ["1"],
+    "rationale": "The official corpus document 1 is titled April."
+  },
+  "august": {
+    "relevant": ["2"],
+    "rationale": "The official corpus document 2 is titled August."
+  },
+  "art": {
+    "relevant": ["6"],
+    "rationale": "The official corpus document 6 is titled Art."
+  }
+}

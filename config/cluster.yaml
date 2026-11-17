@@ -1,0 +1,89 @@
+cluster:
+  nodes:
+    vm1:
+      id: vm1
+      role: ingestion
+      host: 10.244.236.129
+      ssh_user: null
+      runs_hdfs_daemons: false
+      runs_spark_daemons: false
+    vm2:
+      id: vm2
+      role: storage
+      host: 10.244.127.219
+      ssh_user: null
+      runs_hdfs_daemons: true
+      runs_spark_daemons: true
+    vm3:
+      id: vm3
+      role: compute
+      host: 10.244.114.184
+      ssh_user: null
+      runs_hdfs_daemons: true
+      runs_spark_daemons: true
+    vm4:
+      id: vm4
+      role: search
+      host: 10.244.250.196
+      ssh_user: null
+      runs_hdfs_daemons: false
+      runs_spark_daemons: false
+
+services:
+  hdfs:
+    namenode_role: storage
+    rpc_port: 8020
+    http_port: 9870
+    datanode_transfer_port: 9866
+    replication_factor: 2
+  spark:
+    master_role: compute
+    master_port: 7077
+    web_ui_port: 8080
+    worker_memory: 2g
+    worker_cores: 2
+  search:
+    role: search
+    port: 8000
+
+paths:
+  hdfs:
+    datasets: /datasets
+    warehouse: /warehouse
+    iceberg_warehouse: /warehouse/iceberg
+    serving: /serving
+  local:
+    dataset_root: data/datasets
+    serving_root: data/serving
+    reports_root: reports
+
+datasets:
+  phase0:
+    filename: pages.jsonl
+    version: 1
+  phase1:
+    filename: changes.jsonl
+    version: 2
+
+iceberg:
+  catalog: dse
+  documents_table: dse.documents
+  rejections_table: dse.ingestion_rejections
+  runs_table: dse.ingestion_runs
+
+ranking:
+  bm25:
+    k1: 1.2
+    b: 0.75
+  pagerank:
+    damping: 0.85
+    iterations: 15
+    tolerance: 0.000001
+
+compatibility:
+  java_major: 11
+  hadoop_version: 3.3.6
+  spark_version: 3.3.4
+  scala_version: 2.12
+  iceberg_version: 1.8.1
+  iceberg_spark_suffix: 3.3_2.12

@@ -1,0 +1,35 @@
+cluster:
+  zerotier_network_id: ""
+  required_nodes:
+    - vm1
+    - vm2
+    - vm3
+    - vm4
+  required_roles:
+    - ingestion
+    - storage
+    - compute
+    - search
+  ping_timeout_seconds: 3
+  connect_timeout_seconds: 3
+
+iceberg:
+  spark_extensions:
+    - org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+
+spark:
+  driver_memory: 1g
+  executor_memory: 1g
+  executor_cores: 2
+  shuffle_partitions: 8
+  default_parallelism: 8
+  serializer: org.apache.spark.serializer.KryoSerializer
+
+search:
+  host: 0.0.0.0
+  port: 8000
+  workers: 2
+  max_query_length: 256
+  default_page_size: 10
+  max_page_size: 50
+  index_reload_interval_seconds: 30
