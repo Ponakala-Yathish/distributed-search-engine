@@ -8,9 +8,15 @@ export PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 export DSE_CONFIG_FILE="${DSE_CONFIG_FILE:-$REPO_ROOT/config/cluster.yaml}"
 export DSE_SETTINGS_FILE="${DSE_SETTINGS_FILE:-$REPO_ROOT/config/settings.yaml}"
 if [[ -f "$REPO_ROOT/config/.env" ]]; then
+  preserved_hadoop_home="${HADOOP_HOME:-}"
+  preserved_spark_home="${SPARK_HOME:-}"
+  preserved_java_home="${JAVA_HOME:-}"
   set -a
   source "$REPO_ROOT/config/.env"
   set +a
+  [[ -z "${HADOOP_HOME:-}" ]] && [[ -n "$preserved_hadoop_home" ]] && export HADOOP_HOME="$preserved_hadoop_home"
+  [[ -z "${SPARK_HOME:-}" ]] && [[ -n "$preserved_spark_home" ]] && export SPARK_HOME="$preserved_spark_home"
+  [[ -z "${JAVA_HOME:-}" ]] && [[ -n "$preserved_java_home" ]] && export JAVA_HOME="$preserved_java_home"
 fi
 [[ "$DSE_CONFIG_FILE" = /* ]] || DSE_CONFIG_FILE="$REPO_ROOT/$DSE_CONFIG_FILE"
 [[ "$DSE_SETTINGS_FILE" = /* ]] || DSE_SETTINGS_FILE="$REPO_ROOT/$DSE_SETTINGS_FILE"
